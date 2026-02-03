@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version: ["1.10", "1.11"]
+        os: [ubuntu-latest]
+        arch: [x64]
+        include:
+          # Add macOS and Windows for the latest Julia version
+          - os: macos-latest
+            julia-version: "1.11"
+            arch: x64
+          - os: windows-latest
+            julia-version: "1.11"
+            arch: x64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.julia-version }}
+          arch: ${{ matrix.arch }}
+
+      - name: Cache Julia packages
+        uses: julia-actions/cache@v2
+
+      - name: Build Julia packages
+        uses: julia-actions/julia-buildpkg@v1
+
+      - name: Run tests
+        uses: julia-actions/julia-runtest@v1
+
+      - name: Process coverage
+        uses: julia-actions/julia-processcoverage@v1
+        if: matrix.julia-version == '1.11' && matrix.os == 'ubuntu-latest'
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.julia-version == '1.11' && matrix.os == 'ubuntu-latest'
+        with:
+          file: lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false

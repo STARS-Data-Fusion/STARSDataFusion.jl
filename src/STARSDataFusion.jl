@@ -122,7 +122,13 @@ function unif_weighted_obs_operator(sensor, target, sensor_res, target_res)
     d2 = pairwise(Euclidean(), sensor[:, 2]' .+ sensor_res[2] / 2, target[:, 2]' .+ target_res[2] / 2, dims=2) .<= sensor_res[2] / 2
 
     H = d1 .* d2
-    return sparse(broadcast(/, H, sum(H, dims=2)))
+    row_sums = sum(H, dims=2)
+    
+    # Replace NaN values (from 0/0 division) with 0 to handle rows with no overlaps
+    H_normalized = broadcast(/, H, row_sums)
+    H_normalized[isnan.(H_normalized)] .= 0
+    
+    return sparse(H_normalized)
 end
 
 ## need to update for corner coordinates
@@ -377,7 +383,7 @@ function STARS_fusion(
         end
     else
 
-        F = Φ = UniformScaling(1)
+        F = Φ = UniformScaling(1.0)
 
     end
 
@@ -1741,7 +1747,7 @@ function nll_minimize(
         Q = Matrix(BlockDiagonal([ diagm(ar_vars), Q])) # spatial innovation covariance
     else
 
-        F = Φ = UniformScaling(1)
+        F = Φ = UniformScaling(1.0)
         
     end
 

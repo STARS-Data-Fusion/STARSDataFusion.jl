@@ -1,27 +1,19 @@
 using Test
 using STARSDataFusion
-
 using Rasters
+using LinearAlgebra
+using SparseArrays
+using Statistics
+using Dates
 
-const TEST_TIF = joinpath(@__DIR__, "test.tif")
-const OUTPUT_TIF = joinpath(@__DIR__, "test_output.tif")
-
-@testset "STARSDataFusion basic loading" begin
-    @test true  # Replace with real tests
-end
-
-
-@testset "Rasters read GeoTIFF" begin
-    raster = Raster(TEST_TIF)
-    @test !isnothing(raster)
-    @test size(raster) != ()
-end
-
-@testset "Rasters write GeoTIFF" begin
-    raster = Raster(TEST_TIF)
-    write(OUTPUT_TIF, raster; force=true)
-    @test isfile(OUTPUT_TIF)
-    # Optionally, read back and check equality of dimensions
-    written = Raster(OUTPUT_TIF)
-    @test size(written) == size(raster)
+@testset "STARSDataFusion.jl" begin
+    # Include all test files
+    include("test_utilities.jl")
+    include("test_data_structures.jl")
+    include("test_bbox.jl")
+    include("test_points.jl")
+    include("test_covariance_functions.jl")
+    include("test_obs_operators.jl")
+    include("test_spatial_utils.jl")
+    include("test_fusion_basic.jl")
 end
