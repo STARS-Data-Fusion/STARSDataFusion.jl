@@ -1,7 +1,7 @@
 # STARSDataFusion.jl
 
 Spatial Timeseries for Automated high-Resolution multi-Sensor data fusion (STARS) Julia Package
-
+<!-- 
 Margaret C. Johnson (she/her)<br>
 [maggie.johnson@jpl.nasa.gov](mailto:maggie.johnson@jpl.nasa.gov)<br>
 Principal investigator: lead of data fusion methodological development and Julia code implementations.<br>
@@ -36,7 +36,7 @@ Nimrod Carmon (he/him)<br>
 [nimrod.carmon@jpl.nasa.gov](mailto:nimrod.carmon@jpl.nasa.gov)<br>
 Technical contributor for data processing, validation/verification, and hyperspectral resampling<br>
 NASA Jet Propulsion Laboratory 398L
-
+-->
 
 STARS is a general data fusion methodology utilizing spatiotemporal statistical models to optimally combine high spatial resolution VSWIR measurements with high temporal resolution measurements from multiple instruments. The methods are highly-scalable, able to fuse <100 m spatial resolution products in near-real time (<24 hrs) on regional to global scales, to facilitate online data processing as well as large-scale reprocessing of mission datasets. The statistical spatiotemporal modeling framework provides with each fused surface reflectance product associated pixel-level uncertainties incorporating any known data source measurement uncertainties, bias characteristics, and degree of historical data missingness. 
 
